@@ -51,8 +51,7 @@ class SlackReporter {
             this.customLayoutAsync = slackReporterConfig.layoutAsync;
             this.onSuccessSlackChannels =
                 slackReporterConfig.onSuccessChannels || slackReporterConfig.channels;
-            this.onFailureSlackChannels =
-                slackReporterConfig.onFailureChannels || slackReporterConfig.channels;
+            this.onFailureSlackChannels = slackReporterConfig.onFailureChannels;
             this.maxNumberOfFailuresToShow =
                 slackReporterConfig.maxNumberOfFailuresToShow !== undefined
                     ? slackReporterConfig.maxNumberOfFailuresToShow
@@ -118,12 +117,14 @@ class SlackReporter {
             }));
             // Send complete results to each 'on success' channel
             for (const channel in this.onSuccessSlackChannels) {
+                console.log('\nonSuccessSlackChannels: ', channel);
                 await this.postResults(slackClient, channel, resultSummary);
             }
             // Send failure results to each 'on failure' channel if any, filtered by team
             if (testsFailed && this.onFailureSlackChannels) {
                 const failuresByTeam = await this.resultsParser.getParsedFailureResultsByTeam(this.onFailureSlackChannels);
                 for (const [team, summary] of failuresByTeam.entries()) {
+                    console.log('\nonFailureSlackChannels: ', team);
                     await this.postResults(slackClient, team, summary);
                 }
             }

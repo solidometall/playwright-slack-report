@@ -77,8 +77,7 @@ class SlackReporter implements Reporter {
       this.customLayoutAsync = slackReporterConfig.layoutAsync;
       this.onSuccessSlackChannels =
         slackReporterConfig.onSuccessChannels || slackReporterConfig.channels;
-      this.onFailureSlackChannels =
-        slackReporterConfig.onFailureChannels || slackReporterConfig.channels;
+      this.onFailureSlackChannels = slackReporterConfig.onFailureChannels;
       this.maxNumberOfFailuresToShow =
         slackReporterConfig.maxNumberOfFailuresToShow !== undefined
           ? slackReporterConfig.maxNumberOfFailuresToShow
@@ -160,6 +159,7 @@ class SlackReporter implements Reporter {
 
       // Send complete results to each 'on success' channel
       for (const channel in this.onSuccessSlackChannels) {
+        console.log('\nonSuccessSlackChannels: ', channel)
         await this.postResults(slackClient, channel, resultSummary);
       }
 
@@ -171,6 +171,7 @@ class SlackReporter implements Reporter {
           );
 
         for (const [team, summary] of failuresByTeam.entries()) {
+          console.log('\nonFailureSlackChannels: ', team)
           await this.postResults(slackClient, team, summary);
         }
       }
