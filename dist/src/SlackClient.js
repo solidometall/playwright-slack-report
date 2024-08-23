@@ -68,13 +68,7 @@ class SlackClient {
         const result = [];
         let failuresMap;
         const fallbackText = (0, LayoutGenerator_1.generateFallbackText)(summaryResults);
-        if (channelIds.length === 1) {
-            const blocks = await (0, LayoutGenerator_1.generateFailures)(summaryResults, maxNumberOfFailures);
-            failuresMap = new Map([[channelIds[0], blocks]]);
-        }
-        else {
-            failuresMap = await (0, LayoutGenerator_1.generateFailuresByTeams)(summaryResults, maxNumberOfFailures, channelIds);
-        }
+        failuresMap = await (0, LayoutGenerator_1.generateFailuresByTeams)(summaryResults, maxNumberOfFailures, channelIds);
         failuresMap.forEach(async (blocks, channel) => {
             // under test
             let chatResponse;

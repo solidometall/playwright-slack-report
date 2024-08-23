@@ -73,6 +73,7 @@ const generateFailures = async (summaryResults, maxNumberOfFailures) => {
 };
 exports.generateFailures = generateFailures;
 const generateFailuresByTeams = async (summaryResults, maxNumberOfFailures, channelList) => {
+    console.log('\n\nIT`s GENERATING FAILURES BY TEAMS\n\n');
     const maxNumberOfFailureLength = 650;
     const channelBlocksMap = new Map();
     const numberOfFailuresToShow = Math.min(summaryResults.failures.length, maxNumberOfFailures);

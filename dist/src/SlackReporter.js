@@ -95,6 +95,7 @@ class SlackReporter {
         }
         const agent = this.proxy ? new https_proxy_agent_1.HttpsProxyAgent(this.proxy) : undefined;
         if (this.slackWebHookUrl) {
+            console.log('\n\nIT`S USING A SLACK WEBHOOK\n\n');
             const webhook = new webhook_1.IncomingWebhook(this.slackWebHookUrl, {
                 channel: this.slackWebHookChannel,
                 agent,
@@ -111,6 +112,7 @@ class SlackReporter {
             console.log(JSON.stringify(webhookResult, null, 2));
         }
         else {
+            console.log('\n\nIT`S USING A SLACK CLIENT\n\n');
             const slackClient = new SlackClient_1.default(new web_api_1.WebClient(this.slackOAuthToken || process.env.SLACK_BOT_USER_OAUTH_TOKEN, {
                 logLevel: this.slackLogLevel || web_api_1.LogLevel.DEBUG,
                 agent,
