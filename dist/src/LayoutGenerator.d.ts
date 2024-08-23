@@ -4,4 +4,4 @@ declare const generateBlocks: (summaryResults: SummaryResults, maxNumberOfFailur
 declare const generateFailures: (summaryResults: SummaryResults, maxNumberOfFailures: number) => Promise<Array<KnownBlock | Block>>;
 declare const generateFailuresByTeams: (summaryResults: SummaryResults, maxNumberOfFailures: number, channelList: string[]) => Promise<Map<string, Array<KnownBlock | Block>>>;
 declare const generateFallbackText: (summaryResults: SummaryResults) => string;
-export { generateBlocks, generateFailures, generateFailuresByTeams, generateFallbackText };
+export { generateBlocks, generateFailures, generateFailuresByTeams, generateFallbackText, };

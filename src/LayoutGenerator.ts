@@ -94,9 +94,6 @@ const generateFailuresByTeams = async (
   maxNumberOfFailures: number,
   channelList: string[],
 ): Promise<Map<string, Array<KnownBlock | Block>>> => {
-
-  console.log('\n\nIT`s GENERATING FAILURES BY TEAMS\n\n')
-
   const maxNumberOfFailureLength = 650;
   const channelBlocksMap = new Map<string, Array<KnownBlock | Block>>();
 
@@ -152,10 +149,15 @@ const generateFailuresByTeams = async (
 
   return channelBlocksMap;
 };
-  
 
-const generateFallbackText = (summaryResults: SummaryResults): string => `✅ ${summaryResults.passed} ❌ ${summaryResults.failed} ${
-  summaryResults.flaky !== undefined ? ` 🟡 ${summaryResults.flaky} ` : ' '
-}⏩ ${summaryResults.skipped}`;
+const generateFallbackText = (summaryResults: SummaryResults): string =>
+  `✅ ${summaryResults.passed} ❌ ${summaryResults.failed} ${
+    summaryResults.flaky !== undefined ? ` 🟡 ${summaryResults.flaky} ` : ' '
+  }⏩ ${summaryResults.skipped}`;
 
-export { generateBlocks, generateFailures, generateFailuresByTeams, generateFallbackText };
+export {
+  generateBlocks,
+  generateFailures,
+  generateFailuresByTeams,
+  generateFallbackText,
+};

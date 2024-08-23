@@ -53,6 +53,6 @@ async function generateCustomAsyncLayoutSimpleMeta(summaryResults) {
     ];
 }
 exports.generateCustomLayoutSimpleMeta = generateCustomLayoutSimpleMeta;
-exports.generateCustomAsyncLayoutSimpleMeta
-    = generateCustomAsyncLayoutSimpleMeta;
+exports.generateCustomAsyncLayoutSimpleMeta =
+    generateCustomAsyncLayoutSimpleMeta;
 //# sourceMappingURL=cli_block_with_meta.js.map

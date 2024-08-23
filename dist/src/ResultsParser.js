@@ -147,14 +147,15 @@ class ResultsParser {
         }
         return summary;
     }
-    async getParsedFailureResultsByTeams(teams) {
+    async getParsedFailureResultsByTeam(teams) {
         const failures = await this.getFailures();
         // Inicializar el Map que contendrá los resultados filtrados por equipo
-        const teamResults = new Map();
+        const teamsResults = new Map();
         // Filtrar y agrupar los fallos por equipo
         for (const team of teams) {
+            const testTeamRegexp = `@${team}`;
             // Filtrar fallos que pertenecen al equipo actual
-            const teamFailures = failures.filter(failure => failure.test.includes(`@${team}`));
+            const teamFailures = failures.filter((failure) => failure.test.includes(testTeamRegexp));
             if (teamFailures.length > 0) {
                 // Inicializar los resultados del resumen
                 const summary = {
@@ -163,31 +164,31 @@ class ResultsParser {
                     flaky: 0,
                     skipped: 0,
                     failures: teamFailures,
-                    tests: teamFailures.map(failure => ({
-                        suiteName: failure.suite, // Nombre de la suite
-                        name: failure.test, // Nombre del test
-                        browser: undefined, // No disponible en el tipo failure
-                        projectName: undefined, // No disponible en el tipo failure
-                        endedAt: undefined, // No disponible en el tipo failure
-                        reason: failure.failureReason, // Razón del fallo
-                        retry: undefined, // No disponible en el tipo failure
-                        startedAt: undefined, // No disponible en el tipo failure
-                        status: "failed", // Estado del test (en este caso, siempre "failed")
-                        attachments: undefined, // No disponible en el tipo failure
+                    tests: teamFailures.map((failure) => ({
+                        suiteName: failure.suite,
+                        name: failure.test,
+                        browser: undefined,
+                        projectName: undefined,
+                        endedAt: undefined,
+                        reason: failure.failureReason,
+                        retry: undefined,
+                        startedAt: undefined,
+                        status: 'failed',
+                        attachments: undefined,
                     })),
                 };
-                teamResults.set(team, summary);
+                teamsResults.set(team, summary);
             }
         }
-        return teamResults;
+        return teamsResults;
     }
     async getFailures() {
         const failures = [];
         for (const suite of this.result) {
             for (const test of suite.testSuite.tests) {
-                if (test.status === 'failed'
-                    || test.status === 'timedOut'
-                    || test.expectedStatus === 'failed') {
+                if (test.status === 'failed' ||
+                    test.status === 'timedOut' ||
+                    test.expectedStatus === 'failed') {
                     // only flag as failed if the last attempt has failed
                     if (test.retries === test.retry) {
                         failures.push({

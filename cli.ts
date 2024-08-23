@@ -100,8 +100,8 @@ async function sendResultsUsingBot({
     console.log({ config });
   }
   if (
-    resultSummary.failures.length === 0
-    && config.sendResults === 'on-failure'
+    resultSummary.failures.length === 0 &&
+    config.sendResults === 'on-failure'
   ) {
     console.log('⏩ Slack CLI reporter - no failures found');
     return true;
@@ -141,8 +141,8 @@ async function sendResultsUsingBot({
     }
 
     if (
-      result.filter((r) => !r.outcome.includes('✅ Message sent to')).length
-      !== 0
+      result.filter((r) => !r.outcome.includes('✅ Message sent to')).length !==
+      0
     ) {
       return false;
     }

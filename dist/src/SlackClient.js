@@ -64,7 +64,7 @@ class SlackClient {
         }
         return result;
     }
-    async attachDetailsToThread({ channelIds, ts, summaryResults, maxNumberOfFailures, disableUnfurl, fakeRequest, }) {
+    async attachDetailsToThread({ channelIds, ts, summaryResults, maxNumberOfFailures, disableUnfurl, }) {
         const result = [];
         let failuresMap;
         const fallbackText = (0, LayoutGenerator_1.generateFallbackText)(summaryResults);

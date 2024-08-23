@@ -518,8 +518,8 @@ test.describe('ResultsParser', () => {
       'test_data',
       'valid_test_results.json',
     );
-    const resultSummary
-      = await resultsParser.parseFromJsonFile(validTestResults);
+    const resultSummary =
+      await resultsParser.parseFromJsonFile(validTestResults);
     expect(resultSummary.failed).toEqual(3);
     expect(resultSummary.flaky).toEqual(1);
     expect(resultSummary.skipped).toEqual(1);
@@ -551,8 +551,8 @@ test.describe('ResultsParser', () => {
       'test_data',
       'valid_test_results_complex.json',
     );
-    const resultSummary
-      = await resultsParser.parseFromJsonFile(validTestResults);
+    const resultSummary =
+      await resultsParser.parseFromJsonFile(validTestResults);
     expect(resultSummary.failed).toEqual(1);
     expect(resultSummary.flaky).toEqual(0);
     expect(resultSummary.skipped).toEqual(0);
@@ -564,9 +564,7 @@ test.describe('ResultsParser', () => {
   test('retrieve expected failure message from annotation', async ({}) => {
     const resultsParser = new ResultsParser();
     const result = resultsParser.getExpectedFailure({
-      annotations: [
-        { type: 'fail', description: 'This text will fail' },
-      ],
+      annotations: [{ type: 'fail', description: 'This text will fail' }],
     });
     expect(result).toEqual('This text will fail');
   });

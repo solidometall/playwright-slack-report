@@ -12,7 +12,6 @@ import {
 import { SummaryResults } from '.';
 import {
   generateBlocks,
-  generateFailures,
   generateFailuresByTeams,
   generateFallbackText,
 } from './LayoutGenerator';
@@ -116,7 +115,6 @@ export default class SlackClient {
     summaryResults,
     maxNumberOfFailures,
     disableUnfurl,
-    fakeRequest,
   }: {
     channelIds: Array<string>;
     ts: string;
@@ -128,8 +126,12 @@ export default class SlackClient {
     const result = [];
     let failuresMap: Map<string, Array<KnownBlock | Block>>;
     const fallbackText = generateFallbackText(summaryResults);
-    
-    failuresMap = await generateFailuresByTeams(summaryResults, maxNumberOfFailures, channelIds);
+
+    failuresMap = await generateFailuresByTeams(
+      summaryResults,
+      maxNumberOfFailures,
+      channelIds,
+    );
 
     failuresMap.forEach(async (blocks, channel) => {
       // under test
@@ -142,7 +144,7 @@ export default class SlackClient {
         disableUnfurl,
         ts,
       );
-        
+
       if (chatResponse.ok) {
         // eslint-disable-next-line no-console
         console.log(`✅ Message sent to ${channel} within thread ${ts}`);

@@ -25,7 +25,7 @@ export default class SlackClient {
         outcome: string;
         ts: string;
     }>>;
-    attachDetailsToThread({ channelIds, ts, summaryResults, maxNumberOfFailures, disableUnfurl, fakeRequest, }: {
+    attachDetailsToThread({ channelIds, ts, summaryResults, maxNumberOfFailures, disableUnfurl, }: {
         channelIds: Array<string>;
         ts: string;
         summaryResults: SummaryResults;

@@ -99,8 +99,8 @@ async function sendResultsUsingBot({ resultSummary, slackClient, config, }) {
     if (config.slackLogLevel === web_api_1.LogLevel.DEBUG) {
         console.log({ config });
     }
-    if (resultSummary.failures.length === 0
-        && config.sendResults === 'on-failure') {
+    if (resultSummary.failures.length === 0 &&
+        config.sendResults === 'on-failure') {
         console.log('⏩ Slack CLI reporter - no failures found');
         return true;
     }
@@ -130,8 +130,8 @@ async function sendResultsUsingBot({ resultSummary, slackClient, config, }) {
                 });
             }
         }
-        if (result.filter((r) => !r.outcome.includes('✅ Message sent to')).length
-            !== 0) {
+        if (result.filter((r) => !r.outcome.includes('✅ Message sent to')).length !==
+            0) {
             return false;
         }
         return true;
