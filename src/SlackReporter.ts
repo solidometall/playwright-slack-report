@@ -160,7 +160,7 @@ class SlackReporter implements Reporter {
 
       // Send results to each 'on success' channel
       for (const channel in this.onSuccessSlackChannels) {
-        this.postResults(slackClient, channel, resultSummary);
+        await this.postResults(slackClient, channel, resultSummary);
       }
 
       // Send failure results to each 'on failure' channel if any, parsed by team
@@ -171,7 +171,7 @@ class SlackReporter implements Reporter {
           );
 
         for (const [team, summary] of failuresByTeam.entries()) {
-          this.postResults(slackClient, team, summary);
+          await this.postResults(slackClient, team, summary);
         }
       }
     }
