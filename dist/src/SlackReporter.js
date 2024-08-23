@@ -120,28 +120,34 @@ class SlackReporter {
             const slackChannels = testsFailed
                 ? this.onFailureSlackChannels
                 : this.onSuccessSlackChannels;
-            const result = await slackClient.sendMessage({
-                options: {
-                    channelIds: slackChannels,
-                    customLayout: this.customLayout,
-                    customLayoutAsync: this.customLayoutAsync,
-                    maxNumberOfFailures: this.maxNumberOfFailuresToShow,
-                    disableUnfurl: this.disableUnfurl,
-                    summaryResults: resultSummary,
-                    showInThread: this.showInThread,
-                },
-            });
-            // eslint-disable-next-line no-console
-            console.log(JSON.stringify(result, null, 2));
-            if (this.showInThread && resultSummary.failures.length > 0) {
-                for (let i = 0; i < result.length; i += 1) {
-                    // eslint-disable-next-line no-await-in-loop
-                    await slackClient.attachDetailsToThread({
-                        channelIds: [result[i].channel],
-                        ts: result[i].ts,
-                        summaryResults: resultSummary,
+            const failuresMap = await this.resultsParser.getParsedFailureResultsByTeams(slackChannels);
+            for (const [team, teamSummary] of failuresMap.entries()) {
+                console.log('\n\nWE ARE INSIDE THE SENDER METHOD\n\n');
+                const channel = new Array;
+                channel.push(team);
+                const result = await slackClient.sendMessage({
+                    options: {
+                        channelIds: channel,
+                        customLayout: this.customLayout,
+                        customLayoutAsync: this.customLayoutAsync,
                         maxNumberOfFailures: this.maxNumberOfFailuresToShow,
-                    });
+                        disableUnfurl: this.disableUnfurl,
+                        summaryResults: teamSummary,
+                        showInThread: this.showInThread,
+                    },
+                });
+                // eslint-disable-next-line no-console
+                console.log(JSON.stringify(result, null, 2));
+                if (this.showInThread && resultSummary.failures.length > 0) {
+                    for (let i = 0; i < result.length; i += 1) {
+                        // eslint-disable-next-line no-await-in-loop
+                        await slackClient.attachDetailsToThread({
+                            channelIds: [result[i].channel],
+                            ts: result[i].ts,
+                            summaryResults: resultSummary,
+                            maxNumberOfFailures: this.maxNumberOfFailuresToShow,
+                        });
+                    }
                 }
             }
         }

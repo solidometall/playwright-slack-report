@@ -35,6 +35,7 @@ export default class ResultsParser {
     getFailure(snippet: string, stack: string): string;
     getExpectedFailure(test: any): any;
     getParsedResults(allTests: Array<TestCase>): Promise<SummaryResults>;
+    getParsedFailureResultsByTeams(teams: Array<string>): Promise<Map<string, SummaryResults>>;
     getFailures(): Promise<Array<failure>>;
     static getTestName(failedTest: any): any;
     updateResults(data: {
