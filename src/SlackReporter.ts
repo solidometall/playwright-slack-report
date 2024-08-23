@@ -129,6 +129,9 @@ class SlackReporter implements Reporter {
     const agent = this.proxy ? new HttpsProxyAgent(this.proxy) : undefined;
 
     if (this.slackWebHookUrl) {
+
+      console.log('\n\nIT`S USING A SLACK WEBHOOK\n\n');
+
       const webhook = new IncomingWebhook(this.slackWebHookUrl, {
         channel: this.slackWebHookChannel,
         agent,
@@ -144,6 +147,9 @@ class SlackReporter implements Reporter {
       // eslint-disable-next-line no-console
       console.log(JSON.stringify(webhookResult, null, 2));
     } else {
+
+      console.log('\n\nIT`S USING A SLACK CLIENT\n\n');
+
       const slackClient = new SlackClient(
         new WebClient(
           this.slackOAuthToken || process.env.SLACK_BOT_USER_OAUTH_TOKEN,

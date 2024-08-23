@@ -129,13 +129,7 @@ export default class SlackClient {
     let failuresMap: Map<string, Array<KnownBlock | Block>>;
     const fallbackText = generateFallbackText(summaryResults);
     
-    if (channelIds.length === 1) {
-      const blocks = await generateFailures(summaryResults, maxNumberOfFailures);
-      failuresMap = new Map([[channelIds[0], blocks]]);
-    }
-    else {
-      failuresMap = await generateFailuresByTeams(summaryResults, maxNumberOfFailures, channelIds);
-    }
+    failuresMap = await generateFailuresByTeams(summaryResults, maxNumberOfFailures, channelIds);
 
     failuresMap.forEach(async (blocks, channel) => {
       // under test

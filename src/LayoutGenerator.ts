@@ -94,6 +94,9 @@ const generateFailuresByTeams = async (
   maxNumberOfFailures: number,
   channelList: string[],
 ): Promise<Map<string, Array<KnownBlock | Block>>> => {
+
+  console.log('\n\nIT`s GENERATING FAILURES BY TEAMS\n\n')
+
   const maxNumberOfFailureLength = 650;
   const channelBlocksMap = new Map<string, Array<KnownBlock | Block>>();
 
