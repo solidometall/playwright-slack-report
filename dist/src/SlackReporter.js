@@ -116,12 +116,12 @@ class SlackReporter {
                 logLevel: this.slackLogLevel || web_api_1.LogLevel.DEBUG,
                 agent,
             }));
-            // Send results to each 'on success' channel
+            // Send complete results to each 'on success' channel
             for (const channel in this.onSuccessSlackChannels) {
                 await this.postResults(slackClient, channel, resultSummary);
             }
-            // Send failure results to each 'on failure' channel if any, parsed by team
-            if (this.onFailureSlackChannels) {
+            // Send failure results to each 'on failure' channel if any, filtered by team
+            if (testsFailed && this.onFailureSlackChannels) {
                 const failuresByTeam = await this.resultsParser.getParsedFailureResultsByTeam(this.onFailureSlackChannels);
                 for (const [team, summary] of failuresByTeam.entries()) {
                     await this.postResults(slackClient, team, summary);
