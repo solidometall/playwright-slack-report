@@ -156,10 +156,16 @@ class SlackReporter implements Reporter {
           },
         ),
       )
-
+      
+      console.log('\n\nchannels: ', slackReporterConfig.channels.toString() + '\n\n');
+      console.log('\n\nonSuccessChannels: ', slackReporterConfig.onSuccessChannels.toString() + '\n\n');
+      console.log('\n\nonFailureSlackChannels: ', slackReporterConfig.onFailureSlackChannels.toString() + '\n\n')
+      
+      this.onSuccessSlackChannels =
+        slackReporterConfig.onSuccessChannels || slackReporterConfig.channels;
+      
       // Send complete results to each 'on success' channel
       for (const channel in this.onSuccessSlackChannels) {
-        console.log('\nonSuccessSlackChannels: ', channel)
         await this.postResults(slackClient, channel, resultSummary);
       }
 
@@ -171,7 +177,6 @@ class SlackReporter implements Reporter {
           );
 
         for (const [team, summary] of failuresByTeam.entries()) {
-          console.log('\nonFailureSlackChannels: ', team)
           await this.postResults(slackClient, team, summary);
         }
       }
