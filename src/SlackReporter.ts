@@ -20,6 +20,10 @@ class SlackReporter implements Reporter {
 
   private customLayoutAsync: Function | undefined;
 
+  private customFailureLayout: Function | undefined;
+
+  private customFailureLayoutAsync: Function | undefined;
+
   private maxNumberOfFailuresToShow: number;
 
   private showInThread: boolean;
@@ -80,6 +84,8 @@ class SlackReporter implements Reporter {
       this.sendResults = slackReporterConfig.sendResults || 'always';
       this.customLayout = slackReporterConfig.layout;
       this.customLayoutAsync = slackReporterConfig.layoutAsync;
+      this.customFailureLayout = slackReporterConfig.onFailureLayout;
+      this.customFailureLayoutAsync = slackReporterConfig.onFailureLayoutAsync;
       this.slackChannels = slackReporterConfig.channels || [];
       this.onSuccessSlackChannels = slackReporterConfig.onSuccessChannels || [];
       this.onFailureSlackChannels = slackReporterConfig.onFailureChannels || [];
@@ -165,7 +171,7 @@ class SlackReporter implements Reporter {
       // Send complete results to each channel on channels
       if (this.slackChannels) {
         for (const channel of this.slackChannels) {
-          await this.postResults(slackClient, channel, resultSummary);
+          await this.postResults(slackClient, channel, resultSummary, false);
         }
       }
 
@@ -177,14 +183,14 @@ class SlackReporter implements Reporter {
           );
 
         for (const [team, summary] of failuresByTeam.entries()) {
-          await this.postResults(slackClient, team, summary);
+          await this.postResults(slackClient, team, summary, true);
         }
       }
 
       // Send complete results to each 'on success' channel if any
       if (!testsFailed && this.onSuccessSlackChannels) {
         for (const channel of this.onSuccessSlackChannels) {
-          await this.postResults(slackClient, channel, resultSummary);
+          await this.postResults(slackClient, channel, resultSummary, false);
         }
       }
     }
@@ -309,6 +315,7 @@ class SlackReporter implements Reporter {
     slackClient: SlackClient,
     channelName: string,
     summary: SummaryResults,
+    isFailureReport?: boolean,
   ): Promise<void> {
     const channel = [];
     channel.push(channelName);
@@ -316,8 +323,12 @@ class SlackReporter implements Reporter {
     const result = await slackClient.sendMessage({
       options: {
         channelIds: channel,
-        customLayout: this.customLayout,
-        customLayoutAsync: this.customLayoutAsync,
+        customLayout: isFailureReport
+          ? this.customFailureLayout
+          : this.customLayout,
+        customLayoutAsync: isFailureReport
+          ? this.customFailureLayoutAsync
+          : this.customLayoutAsync,
         maxNumberOfFailures: this.maxNumberOfFailuresToShow,
         disableUnfurl: this.disableUnfurl,
         summaryResults: summary,

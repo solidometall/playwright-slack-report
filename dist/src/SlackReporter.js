@@ -12,6 +12,8 @@ const SlackWebhookClient_1 = __importDefault(require("./SlackWebhookClient"));
 class SlackReporter {
     customLayout;
     customLayoutAsync;
+    customFailureLayout;
+    customFailureLayoutAsync;
     maxNumberOfFailuresToShow;
     showInThread;
     meta = [];
@@ -50,6 +52,8 @@ class SlackReporter {
             this.sendResults = slackReporterConfig.sendResults || 'always';
             this.customLayout = slackReporterConfig.layout;
             this.customLayoutAsync = slackReporterConfig.layoutAsync;
+            this.customFailureLayout = slackReporterConfig.onFailureLayout;
+            this.customFailureLayoutAsync = slackReporterConfig.onFailureLayoutAsync;
             this.slackChannels = slackReporterConfig.channels || [];
             this.onSuccessSlackChannels = slackReporterConfig.onSuccessChannels || [];
             this.onFailureSlackChannels = slackReporterConfig.onFailureChannels || [];
@@ -119,20 +123,20 @@ class SlackReporter {
             // Send complete results to each channel on channels
             if (this.slackChannels) {
                 for (const channel of this.slackChannels) {
-                    await this.postResults(slackClient, channel, resultSummary);
+                    await this.postResults(slackClient, channel, resultSummary, false);
                 }
             }
             // Send failure results to each 'on failure' channel if any, filtered by team
             if (testsFailed && this.onFailureSlackChannels) {
                 const failuresByTeam = await this.resultsParser.getParsedFailureResultsByTeam(this.onFailureSlackChannels);
                 for (const [team, summary] of failuresByTeam.entries()) {
-                    await this.postResults(slackClient, team, summary);
+                    await this.postResults(slackClient, team, summary, true);
                 }
             }
             // Send complete results to each 'on success' channel if any
             if (!testsFailed && this.onSuccessSlackChannels) {
                 for (const channel of this.onSuccessSlackChannels) {
-                    await this.postResults(slackClient, channel, resultSummary);
+                    await this.postResults(slackClient, channel, resultSummary, false);
                 }
             }
         }
@@ -219,14 +223,18 @@ class SlackReporter {
     printsToStdio() {
         return false;
     }
-    async postResults(slackClient, channelName, summary) {
+    async postResults(slackClient, channelName, summary, isFailureReport) {
         const channel = [];
         channel.push(channelName);
         const result = await slackClient.sendMessage({
             options: {
                 channelIds: channel,
-                customLayout: this.customLayout,
-                customLayoutAsync: this.customLayoutAsync,
+                customLayout: isFailureReport
+                    ? this.customFailureLayout
+                    : this.customLayout,
+                customLayoutAsync: isFailureReport
+                    ? this.customFailureLayoutAsync
+                    : this.customLayoutAsync,
                 maxNumberOfFailures: this.maxNumberOfFailuresToShow,
                 disableUnfurl: this.disableUnfurl,
                 summaryResults: summary,

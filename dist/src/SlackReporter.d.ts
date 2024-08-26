@@ -4,6 +4,8 @@ import { SummaryResults } from '.';
 declare class SlackReporter implements Reporter {
     private customLayout;
     private customLayoutAsync;
+    private customFailureLayout;
+    private customFailureLayoutAsync;
     private maxNumberOfFailuresToShow;
     private showInThread;
     private meta;
@@ -30,6 +32,6 @@ declare class SlackReporter implements Reporter {
     };
     log(message: string | undefined): void;
     printsToStdio(): boolean;
-    postResults(slackClient: SlackClient, channelName: string, summary: SummaryResults): Promise<void>;
+    postResults(slackClient: SlackClient, channelName: string, summary: SummaryResults, isFailureReport?: boolean): Promise<void>;
 }
 export default SlackReporter;
