@@ -173,7 +173,7 @@ export default class ResultsParser {
   }
 
   async getParsedFailureResultsByTeam(
-    teams: Array<string>,
+    teams: Array<{ channelName: string; testNamePattern: string }>,
   ): Promise<Map<string, SummaryResults>> {
     const failures = await this.getFailures();
 
@@ -181,8 +181,8 @@ export default class ResultsParser {
     const teamsResults = new Map<string, SummaryResults>();
 
     // Filter and group failures by teams
-    for (const team of teams) {
-      const testTeamRegexp = new RegExp(`@${team}(?:\\s|\\[)`, 'i');
+    for (const { channelName, testNamePattern } of teams) {
+      const testTeamRegexp = new RegExp(`${testNamePattern}(?:\\s|\\[)`, 'i');
 
       // Filter out failures that belong to the current team
       const teamFailures = failures.filter((failure) =>
@@ -211,7 +211,7 @@ export default class ResultsParser {
           })),
         };
 
-        teamsResults.set(team, summary);
+        teamsResults.set(channelName, summary);
       }
     }
 

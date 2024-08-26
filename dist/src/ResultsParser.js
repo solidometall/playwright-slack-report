@@ -152,8 +152,8 @@ class ResultsParser {
         // Initialize the map object that will contain the results filtered by team
         const teamsResults = new Map();
         // Filter and group failures by teams
-        for (const team of teams) {
-            const testTeamRegexp = new RegExp(`@${team}(?:\\s|\\[)`, 'i');
+        for (const { channelName, testNamePattern } of teams) {
+            const testTeamRegexp = new RegExp(`${testNamePattern}(?:\\s|\\[)`, 'i');
             // Filter out failures that belong to the current team
             const teamFailures = failures.filter((failure) => testTeamRegexp.test(failure.test));
             if (teamFailures.length > 0) {
@@ -177,7 +177,7 @@ class ResultsParser {
                         attachments: undefined,
                     })),
                 };
-                teamsResults.set(team, summary);
+                teamsResults.set(channelName, summary);
             }
         }
         return teamsResults;

@@ -400,7 +400,18 @@ An array of Slack channels to post to, at least one channel is required
 ### **onSuccessChannels**
 (Optional) An array of Slack channels to post to when tests have passed. Value from `channels` is used if not defined here
 ### **onFailureChannels**
-(Optional) An array of Slack channels to post to when tests have failed. Value from `channels` is used if not defined here
+(Optional) An array of Slack channels & Test Name Pattern to post to when tests have failed.
+Each test matching the name pattern will be sent to the corresponding channel.
+
+```
+onFailureChannels:[
+  { channelName: 'automation-report-solido-1', testNamePattern: '@solido-sape-1' },
+  { channelName: 'automation-report-sape-x', testNamePattern: '@solido-sape-x' }
+],
+```
+Note: those tests where its name _ends_ with the pattern will be filtered.
+EG: test name >> "User should be able to filter tests by pattern @solido-sape-x"
+
 ### **sendResults**
 Can either be *"always"*, *"on-failure"* or *"off"*, this configuration is required:
   * **always** - will send the results to Slack at completion of the test run

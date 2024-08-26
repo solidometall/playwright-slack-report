@@ -34,7 +34,10 @@ class SlackReporter implements Reporter {
 
   private onSuccessSlackChannels: string[] = [];
 
-  private onFailureSlackChannels: string[] = [];
+  private onFailureSlackChannels: {
+    channelName: string;
+    testNamePattern: string;
+  }[] = [];
 
   private slackLogLevel: LogLevel | undefined;
 
