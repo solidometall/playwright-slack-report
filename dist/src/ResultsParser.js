@@ -149,15 +149,15 @@ class ResultsParser {
     }
     async getParsedFailureResultsByTeam(teams) {
         const failures = await this.getFailures();
-        // Inicializar el Map que contendrá los resultados filtrados por equipo
+        // Initialize the map object that will contain the results filtered by team
         const teamsResults = new Map();
-        // Filtrar y agrupar los fallos por equipo
+        // Filter and group failures by teams
         for (const team of teams) {
-            const testTeamRegexp = `@${team}`;
-            // Filtrar fallos que pertenecen al equipo actual
-            const teamFailures = failures.filter((failure) => failure.test.includes(testTeamRegexp));
+            const testTeamRegexp = new RegExp(`@${team}(?:\\s|\\[)`, 'i');
+            // Filter out failures that belong to the current team
+            const teamFailures = failures.filter((failure) => testTeamRegexp.test(failure.test));
             if (teamFailures.length > 0) {
-                // Inicializar los resultados del resumen
+                // Initialize summary results
                 const summary = {
                     passed: 0,
                     failed: teamFailures.length,

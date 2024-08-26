@@ -9,6 +9,7 @@ declare class SlackReporter implements Reporter {
     private meta;
     private resultsParser;
     private sendResults;
+    private slackChannels;
     private onSuccessSlackChannels;
     private onFailureSlackChannels;
     private slackLogLevel;
