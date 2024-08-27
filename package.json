@@ -26,7 +26,8 @@
     "typescript": "^5.5.4"
   },
   "scripts": {
-    "prettier": "prettier --write --loglevel warn \"**/**/*.ts\"",
+    "prettier": "prettier --check --loglevel warn \"**/**/*.ts\"",
+    "prettier-fix": "prettier --write \"**/**/*.ts\"",
     "pw": "nyc playwright test && nyc report --reporter=lcov",
     "build": "tsc -p ./tsconfig.json",
     "lint": "npx eslint . --ext .ts",

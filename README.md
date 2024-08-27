@@ -422,6 +422,12 @@ A function that returns a layout object, this configuration is optional.  See se
 * meta - an array of meta data to be sent to Slack, this configuration is optional.
 ### **layoutAsync**
 Same as **layout** above, but asynchronous in that it returns a promise.
+### **onFailureLayout**
+A different layout object that can be used with onFailureChannels option. This configuration is optional, if not provided, layout object will be used instead.
+You also have to configure it in `playwright.config.ts` file.
+
+Example: `const reporterSelected = selectReporters(RPconfig, currentDate, slackLayout, slackLayoutOnFailure);`
+
 ### **maxNumberOfFailuresToShow**
 Limits the number of failures shown in the Slack message, defaults to 10.
 ### **slackOAuthToken**
