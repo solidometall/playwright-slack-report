@@ -130,6 +130,7 @@ class SlackReporter {
             if (testsFailed && this.onFailureSlackChannels) {
                 const failuresByTeam = await this.resultsParser.getParsedFailureResultsByTeam(this.onFailureSlackChannels);
                 for (const [team, summary] of failuresByTeam.entries()) {
+                    summary.meta = this.meta;
                     await this.postResults(slackClient, team, summary, true);
                 }
             }

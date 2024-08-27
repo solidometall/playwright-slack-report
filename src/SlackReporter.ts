@@ -183,6 +183,7 @@ class SlackReporter implements Reporter {
           );
 
         for (const [team, summary] of failuresByTeam.entries()) {
+          summary.meta = this.meta;
           await this.postResults(slackClient, team, summary, true);
         }
       }
